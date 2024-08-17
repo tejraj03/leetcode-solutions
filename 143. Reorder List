@@ -1,0 +1,44 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null) head = null;
+        // to point the middle node or left middle node
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // reverse 2nd half of list
+        ListNode curr = slow;
+        ListNode prev = null;
+        ListNode front = null;
+        while(curr != null){
+            front = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = front;
+        }
+        // merge 1-2-3 and 6-5-4 to 1-6-2-5-3-4
+        // 1 - 2  \\\\\  5-4-3
+        ListNode left = head;
+        ListNode temp = head;
+        ListNode right = prev;
+        while(right.next != null){
+            temp = temp.next;
+            left.next = right;
+            right = right.next;
+            left.next.next = temp;
+            left = temp;
+        }
+    }
+}
